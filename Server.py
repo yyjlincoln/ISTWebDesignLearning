@@ -194,6 +194,12 @@ while True:
             header = 'HTTP/1.1 200 OK\n\n'
             send_response(header,filename)
             continue
+#--
+        filename = getfilename(parse.unquote(msgs[1].decode('utf-8')))
+        header = 'HTTP/1.1 200 OK\n\n'
+        send_response(header,filename)
+        continue
+#--
         Trial=Trial+1
         if Trial>Maximum_Trial and Maximum_Trial!=0:
             header = 'HTTP/1.1 200 OK\n\n'
