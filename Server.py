@@ -33,7 +33,7 @@ listignore=[Err401,Err404,Err403,Err500,Maximum_Trial_Redirect,'/Server.py']
 def switchdet(Rq):
     print(Rq)
     if Rq=='/Switch to School Server.html':
-        hd='HTTP/1.1 301 Redirecting...\nLocation:http://10.179.121.30/\r\n\r\n'
+        hd='HTTP/1.1 301 Redirecting...\nLocation:http://10.179.121.53/\r\n\r\n'
         send_response(hd,'',DirectContent='<b>Switching Server...</b>')
         return 'STOP'
 
@@ -174,6 +174,25 @@ def delay():
     Trial=0
     _thread.exit_thread()
 
+def handle(connectionSocket,addr):
+    try:
+        message = connectionSocket.recv(1024)
+        msgs=message.split()
+        print(msgs[1].decode('utf-8'))
+        filename = getfilename(parse.unquote(msgs[1].decode('utf-8')))
+        header = 'HTTP/1.1 200 OK\n\n'
+        send_response(header,filename)
+        return
+    except:
+        try:
+            header = 'HTTP/1.1 500 Server Error\n\n'
+            filename = Err500
+            send_response(header,filename)
+            connectionSocket.close()
+        except:
+            return
+        return
+
 serverSocket = socket(AF_INET,SOCK_STREAM)
 serverSocket.bind(('',80))
 serverSocket.listen(5)
@@ -185,39 +204,4 @@ for x in UserList:
 while True:
     print('System Ready')
     connectionSocket, addr = serverSocket.accept()
-    try:
-        message = connectionSocket.recv(1024)
-        msgs=message.split()
-        print(msgs[1].decode('utf-8'))
-        if parse.unquote(msgs[1].decode('utf-8')) in PublicSite:
-            filename = getfilename(parse.unquote(msgs[1].decode('utf-8')))
-            header = 'HTTP/1.1 200 OK\n\n'
-            send_response(header,filename)
-            continue
-#--
-        filename = getfilename(parse.unquote(msgs[1].decode('utf-8')))
-        header = 'HTTP/1.1 200 OK\n\n'
-        send_response(header,filename)
-        continue
-#--
-        Trial=Trial+1
-        if Trial>Maximum_Trial and Maximum_Trial!=0:
-            header = 'HTTP/1.1 200 OK\n\n'
-            filename = Maximum_Trial_Redirect
-            send_response(header,filename)
-        header = 'HTTP/1.1 401 Unauthorized\n'+AuthMsg+'\n\n'
-        filename = Err401
-        for x in range(len(msgs)):
-            if msgs[x].decode('utf-8')=='Authorization:':
-                if msgs[x+1].decode('utf-8')=='Basic':
-                    if msgs[x+2].decode('utf-8') in Password_encode:
-                        header='\nHTTP/1.1 200 OK\n\n'
-                        filename = getfilename(parse.unquote(msgs[1].decode('utf-8')))
-                        Trial=0
-                        break
-        if Trial==Maximum_Trial:
-            _thread.start_new_thread(delay,())
-    except Exception:
-        header = '\nHTTP/1.1 500 Server Error\n\n'
-        filename = Err500
-    send_response(header,filename)
+    _thread.start_new(handle,(connectionSocket,addr))
