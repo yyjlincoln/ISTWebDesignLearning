@@ -77,7 +77,7 @@ def generatefilelist(sx,Folder):
     sx.send(str(header+start).encode())
     sx.close()
 
-@StatusMonitor(allow_error=False,print_error=False)
+@StatusMonitor(allow_error=False,print_error=True)
 def ConnectionEstablished(sx,addr): # Analyse Request
     rawdata=sx.recv(2048)
     try:
@@ -85,10 +85,20 @@ def ConnectionEstablished(sx,addr): # Analyse Request
         if httptry[0] == 'GET':
             #HTTP
             Address=parse.unquote(httptry[1])
+        else:
+            sx.close()
+    
         if Address in Redirect:
             Address=Redirect[Address]
             print(Address)
         Rq=Address
+        ContentType='auto'
+        if Address[-4:]=='.mp3':
+            ContentType='audio/mpeg'
+        if Address[-4:]=='.wav':
+            ContentType='audio/mpeg'
+        if Address[-4:]=='.mp4':
+            ContentType='video/mp4'
         try:
             if Address[:2]=='//':
                 raise PermissionError
@@ -113,7 +123,7 @@ def ConnectionEstablished(sx,addr): # Analyse Request
         try:
             with open(Address[1:],'r') as f:
                 #print('file')
-                sx.send('HTTP/1.1 200 OK\r\n\r\n'.encode())
+                sx.send(str('HTTP/1.1 200 OK\nContent-Type:%s\r\n\r\n'%ContentType).encode())
                 sx.send(f.read().encode())
             sx.close()
         except PermissionError:
@@ -131,9 +141,10 @@ def ConnectionEstablished(sx,addr): # Analyse Request
         except:
             with open(Address[1:],'rb') as f:
                 #print('file')
-                sx.send('HTTP/1.1 200 OK\r\n\r\n'.encode())
+                sx.send(str('HTTP/1.1 200 OK\nContent-Type:%s\r\n\r\n'%ContentType).encode())
                 sx.send(f.read())
             sx.close()
-    except:
+    except Exception as r:
         sx.send('HTTP/1.1 404 Error\r\n\r\n'.encode())
         sx.close()
+        raise r
