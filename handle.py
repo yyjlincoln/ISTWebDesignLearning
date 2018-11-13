@@ -75,6 +75,7 @@ def generatefilelist(sx,Folder):
     start=start+'</div></body></html>'
     header='HTTP/1.1 200 OK\r\n\r\n'
     sx.send(str(header+start).encode())
+    sx.close()
 
 @StatusMonitor(allow_error=False,print_error=False)
 def ConnectionEstablished(sx,addr): # Analyse Request
