@@ -90,6 +90,7 @@ def ConnectionEstablished(sx,addr): # Analyse Request
             print(Address)
         Rq=Address
         try:
+            sx.send('HTTP/1.1 200 OK\r\n\r\n'.encode())
             if Address[:2]=='//':
                 raise PermissionError
             if Rq=='/':
