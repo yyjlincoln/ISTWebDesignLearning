@@ -76,7 +76,7 @@ def generatefilelist(sx,Folder):
     header='HTTP/1.1 200 OK\r\n\r\n'
     sx.send(str(header+start).encode())
 
-@StatusMonitor(allow_error=False)
+@StatusMonitor(allow_error=False,print_error=False)
 def ConnectionEstablished(sx,addr): # Analyse Request
     rawdata=sx.recv(2048)
     try:
@@ -89,6 +89,8 @@ def ConnectionEstablished(sx,addr): # Analyse Request
             print(Address)
         Rq=Address
         try:
+            if Address[:2]=='//':
+                raise PermissionError
             if Rq=='/':
                 generatefilelist(sx,'')
                 return
