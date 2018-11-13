@@ -90,7 +90,6 @@ def ConnectionEstablished(sx,addr): # Analyse Request
             print(Address)
         Rq=Address
         try:
-            sx.send('HTTP/1.1 200 OK\r\n\r\n'.encode())
             if Address[:2]=='//':
                 raise PermissionError
             if Rq=='/':
@@ -114,6 +113,7 @@ def ConnectionEstablished(sx,addr): # Analyse Request
         try:
             with open(Address[1:],'r') as f:
                 #print('file')
+                sx.send('HTTP/1.1 200 OK\r\n\r\n'.encode())
                 sx.send(f.read().encode())
             sx.close()
         except PermissionError:
@@ -131,6 +131,7 @@ def ConnectionEstablished(sx,addr): # Analyse Request
         except:
             with open(Address[1:],'rb') as f:
                 #print('file')
+                sx.send('HTTP/1.1 200 OK\r\n\r\n'.encode())
                 sx.send(f.read())
             sx.close()
     except:
