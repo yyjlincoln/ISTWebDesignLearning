@@ -1,0 +1,26 @@
+#header{
+    float: initial;
+    margin-left: auto;
+    margin-right: auto;
+    nav-down: auto;
+/*    background-color: bisque; */
+}
+
+#message{
+    float: initial;
+    margin-left: auto;
+    margin-right: auto;
+    nav-down: auto;
+/*    background-color: bisque; */
+}
+
+#files{
+    float: initial;
+    margin-left: auto;
+    margin-right: auto;
+    nav-down: auto;
+/*    background-color: bisque;
+    border: solid;
+    border-color: black;
+    border-width: 1px; */
+}

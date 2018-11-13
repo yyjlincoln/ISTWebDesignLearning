@@ -1,0 +1,113 @@
+#Created by Lincoln Yan - https://github.com/yyjlincoln
+#Date: 20181103
+
+#imports
+from socket import socket
+from threading import Thread
+from _thread import start_new,exit_thread
+from errors import StatusMonitor
+from errors import printlog as print
+import hashlib, base64, random
+import string
+from urllib import parse
+import os
+
+PermissionCallback=None
+NotFoundCallback=None
+ExceptionCallback=None
+Redirect={'/':'/index.html'}
+
+
+SaltPool={}
+
+@StatusMonitor(allow_error=True)
+class Handle(Thread): # Handles requests
+    @StatusMonitor(allow_error=True)
+    def __init__(self,sx,addr):
+        Thread.__init__(self)
+        self.sx=sx
+        self.addr=addr
+
+    @StatusMonitor(allow_error=True)
+    def run(self):
+        sx=self.sx
+        addr=self.addr
+        #处理事件
+        ConnectionEstablished(sx,addr)
+
+class InvalidRequest(Exception):
+    pass
+
+class InvalidToken(Exception):
+    pass
+
+class BadRequest(Exception):
+    pass
+
+class RequestFailed(Exception):
+    pass
+    
+@StatusMonitor()
+def generatefilelist(sx,Folder):
+    start='''<html>
+<link rel="stylesheet" type="text/css" href="/filelistcss.css">
+<head>
+<meta charset='utf-8'>
+<title>File Center - UFAS</title>
+</head>
+<body>
+<div id="header">
+<b><font size="5pt">Lincoln Yan's File Server.</font></b>
+</div>
+<hr>
+<div id="message">
+<p>Files available ('''+'/'+Folder[1:]+'):</p></div><div id="files">'
+    TempDir=os.listdir(os.path.join(os.getcwd(),Folder[1:]))
+    for x in TempDir:
+        start=start+'<p><a href='+parse.quote(Folder)+'/'+parse.quote(x)+'>'+x+'</a></p>\n'
+    start=start+'</div></body></html>'
+    header='HTTP/1.1 200 OK\r\n\r\n'
+    sx.send(str(header+start).encode())
+
+@StatusMonitor(allow_error=False)
+def ConnectionEstablished(sx,addr): # Analyse Request
+    rawdata=sx.recv(2048)
+    try:
+        httptry=rawdata.decode().split(' ')
+        if httptry[0] == 'GET':
+            #HTTP
+            Address=httptry[1]
+            Rq=Address
+        if Rq in Redirect:
+            Address=Redirect[Rq]
+        if Rq=='/':
+            generatefilelist(sx,'')
+            return
+        if os.path.isdir(os.path.join(os.getcwd(),Rq[1:])):
+            generatefilelist(sx,Rq)
+            return
+        try:
+            with open(Address[1:],'r') as f:
+                #print('file')
+                sx.send(f.read().encode())
+            sx.close()
+        except PermissionError:
+            if PermissionCallback:
+                PermissionCallback(sx)
+            else:
+                sx.send('HTTP/1.1 403 Forbidden by system\r\n\r\n'.encode())
+                sx.close()
+        except FileNotFoundError:
+            if NotFoundCallback:
+                NotFoundCallback(sx)
+            else:
+                sx.send('HTTP/1.1 404 Error\r\n\r\n'.encode())
+                sx.close()
+        except:
+            with open(Address[1:],'rb') as f:
+                #print('file')
+                sx.send(f.read())
+            sx.close()
+    except:
+        sx.send('HTTP/1.1 404 Error\r\n\r\n'.encode())
+        sx.close()

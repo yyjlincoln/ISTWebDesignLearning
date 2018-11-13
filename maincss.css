@@ -1,0 +1,25 @@
+#container{
+    widows: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+    border-style: solid; 
+    background-color: beige;   
+}
+#header{
+    float: left;
+    width: 100px;
+    height:150px;
+    background-color: antiquewhite;
+}
+#nav{
+    float: left;
+    width: 1000px;
+    height: 500px;
+    background-color: #cdcdcd;
+}
+#box1{
+    float: left;
+    width:500px;
+    height:300px;
+    background-color: #ab24ce;
+}
