@@ -61,7 +61,14 @@ def generatefilelist(sx,Folder):
 </div>
 <hr>
 <div id="message">
-<p>Files available ('''+'/'+Folder[1:]+'):</p></div><div id="files">'
+<p>Files available ('''+'/'+Folder[1:]+'):</p></div><div id="files">\n'
+    Tmp=Folder.split('/')
+    if len(Tmp)!=0:
+        Tmp.pop(-1)
+    UpperFolder='/'+'/'.join(Tmp)
+    if UpperFolder[:2]=='//':
+        UpperFolder=UpperFolder[1:]
+    start=start+'<p><a href='+parse.quote(UpperFolder)+'>'+'..'+'</a></p>\n'
     TempDir=os.listdir(os.path.join(os.getcwd(),Folder[1:]))
     for x in TempDir:
         start=start+'<p><a href='+parse.quote(Folder)+'/'+parse.quote(x)+'>'+x+'</a></p>\n'
@@ -76,16 +83,30 @@ def ConnectionEstablished(sx,addr): # Analyse Request
         httptry=rawdata.decode().split(' ')
         if httptry[0] == 'GET':
             #HTTP
-            Address=httptry[1]
-            Rq=Address
-        if Rq in Redirect:
-            Address=Redirect[Rq]
-        if Rq=='/':
-            generatefilelist(sx,'')
-            return
-        if os.path.isdir(os.path.join(os.getcwd(),Rq[1:])):
-            generatefilelist(sx,Rq)
-            return
+            Address=parse.unquote(httptry[1])
+        if Address in Redirect:
+            Address=Redirect[Address]
+            print(Address)
+        Rq=Address
+        try:
+            if Rq=='/':
+                generatefilelist(sx,'')
+                return
+            if os.path.isdir(os.path.join(os.getcwd(),Rq[1:])):
+                generatefilelist(sx,Rq)
+                return
+        except PermissionError:
+            if PermissionCallback:
+                PermissionCallback(sx)
+            else:
+                sx.send('HTTP/1.1 403 Forbidden by system\r\n\r\n'.encode())
+                sx.close()
+        except FileNotFoundError:
+            if NotFoundCallback:
+                NotFoundCallback(sx)
+            else:
+                sx.send('HTTP/1.1 404 Error\r\n\r\n'.encode())
+                sx.close()
         try:
             with open(Address[1:],'r') as f:
                 #print('file')
