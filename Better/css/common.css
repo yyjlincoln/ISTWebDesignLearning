@@ -5,6 +5,9 @@
     background-image: url('../sources/background.jpg');
 }
 
+#container2{
+    background-image: url('../sources/background2.jpg')
+}
 
 body{
     font-size: 0.5cm;
