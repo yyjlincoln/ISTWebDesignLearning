@@ -20,7 +20,7 @@ function onthescrool(){
     //console.log(screen.availHeight);
     e = b/(a-screen.availHeight); //Scrool Distance percentage
 
-    var maxsc=0.1*$("#main-container").innerHeight();
+    var maxsc=0.15*$("#main-container").innerHeight();
     var maj=maxsc-$(window).scrollTop();
     if(maj>0){
         $("#enjoytitle").css("padding-top",String(OrgTitle-maxsc+maj)+"px")//b
