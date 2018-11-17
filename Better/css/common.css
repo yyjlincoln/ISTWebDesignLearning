@@ -1,5 +1,5 @@
 @import url('https://fonts.googleapis.com/css?family=Allerta+Stencil');
-
+@import url('https://fonts.googleapis.com/css?family=Inconsolata');
 
 #main-container{
     background-image: url('../sources/background.jpg');
@@ -44,7 +44,7 @@ body{
     /* width: 100%; Will be changed by a javascript */
     /* background-color: aliceblue; */
     image-orientation: inherit;
-    image-rendering: optimizeQuality;
+    image-rendering: optimizeSpeed;
     background-repeat: no-repeat;
     /* background-size: cover; */
     background-size: cover;
