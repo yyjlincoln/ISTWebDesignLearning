@@ -13,4 +13,4 @@ function loadCSS() {
         document.write('<script>top.location="'+where_desktop+'"</script>')}
        }
    }
-   loadCSS()
+// /   loadCSS()

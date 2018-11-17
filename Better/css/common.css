@@ -20,24 +20,31 @@ body{
     /* background-color: rgb(80%,80%,80%); */
     text-align: center;
     padding-bottom: 3px;
+    margin: 0%;
 }
 
-#main-container{
+#footer-text{
+    margin: 5px;
+}
+
+
+.container{
     /* width: 100%; Will be changed by a javascript */
     /* background-color: aliceblue; */
     image-orientation: inherit;
     image-rendering: optimizeQuality;
-    background-image: url('../sources/background.jpg');
     background-repeat: no-repeat;
     /* background-size: cover; */
+    background-image: url('../sources/background.jpg');
     background-size: cover;
     background-origin: content-box;
     align-content: center;
     align-items: center;
     vertical-align: middle;
+    overflow: hidden;
 }
 
-#main-container-wrapper{
+.container-wrapper{
     width: inherit;
     height: inherit;
     margin:0;
@@ -45,7 +52,7 @@ body{
     opacity: 50%;
 }
 
-#main-container-header{
+.container-header{
     font-size: 1.5em;
     text-align: center;
 }
@@ -56,12 +63,19 @@ body{
     padding-bottom: none;
 }
 
-p.title{
+.title,.info{
     font-family: 'Allerta Stencil', sans-serif;
     text-shadow: black;
     color: white;
     margin: 0%;
-    font-size: 700%;
+    font-size: 3.5cm;
+    overflow: hidden;
+}
+
+.info{
+    padding-top: 45%;
+    margin: 0;
+    padding-left: 5%;
 }
 
 code,.codestyle{
