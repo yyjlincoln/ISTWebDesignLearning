@@ -9,6 +9,10 @@
     background-image: url('../sources/background2.jpg')
 }
 
+#container-intro{
+    background-image: url('../sources/enjoy.PNG')
+}
+
 body{
     font-size: 0.5cm;
     font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif;
@@ -78,12 +82,12 @@ body{
     margin: 0%;
     font-size: 3.5cm;
     overflow: hidden;
+    padding-left: 5%;
 }
 
 .info{
     padding-top: 45%;
     margin: 0;
-    padding-left: 5%;
 }
 
 code,.codestyle{
@@ -94,6 +98,7 @@ code,.codestyle{
 code{
     border: 1px;
     border-color:#e0e3e4;
+    background-color: inherit;
     border-style: solid;
     padding-top: 1px;
     padding-bottom: 1px;
