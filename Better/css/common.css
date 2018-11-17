@@ -1,5 +1,11 @@
 @import url('https://fonts.googleapis.com/css?family=Allerta+Stencil');
 
+
+#main-container{
+    background-image: url('../sources/background.jpg');
+}
+
+
 body{
     font-size: 0.5cm;
     font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif;
@@ -27,7 +33,6 @@ body{
     margin: 5px;
 }
 
-
 .container{
     /* width: 100%; Will be changed by a javascript */
     /* background-color: aliceblue; */
@@ -35,13 +40,13 @@ body{
     image-rendering: optimizeQuality;
     background-repeat: no-repeat;
     /* background-size: cover; */
-    background-image: url('../sources/background.jpg');
     background-size: cover;
     background-origin: content-box;
     align-content: center;
     align-items: center;
     vertical-align: middle;
-    overflow: hidden;
+    overflow: scroll;
+    overflow-x: hidden;
 }
 
 .container-wrapper{
