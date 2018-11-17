@@ -1,0 +1,47 @@
+body{
+    font-size: 2cm;
+    font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif;
+    color: black;
+    /* padding-top: 1px;
+    padding-bottom: 1px; */
+    float: left;
+    scroll-behavior: smooth;
+    overflow: hidden;
+    overflow-y: auto;
+    margin:0;
+}
+
+#footer{
+    font-size: 1.5cm;
+    color:rgb(0,0,0);
+    background-color: rgb(80%,80%,80%);
+    text-align: center;
+}
+
+#main-container{
+    margin: 0;
+    /* width: 100%; Will be changed by a javascript */
+    width: 10px;
+    background-color: aliceblue;
+    width: 80%;
+}
+
+code{
+    font-size: 1em;
+    font-family: Consolas, 'Courier New', monospace;
+    border: 1px;
+    border-color:#e0e3e4;
+    border-style: solid;
+    color: #e64d3e;
+    padding-top: 1px;
+    padding-bottom: 1px;
+    padding-right: 2px;
+    padding-left: 2px;
+}
+
+img {
+    border: 0;
+    -ms-interpolation-mode: bicubic;
+    vertical-align: middle;
+    max-width: 100%
+}

@@ -121,7 +121,7 @@ def ConnectionEstablished(sx,addr): # Analyse Request
                 sx.send('HTTP/1.1 404 Error\r\n\r\n'.encode())
                 sx.close()
         try:
-            with open(Address[1:],'r') as f:
+            with open(Address[1:],'r',encoding='utf-8') as f:
                 #print('file')
                 sx.send(str('HTTP/1.1 200 OK\nContent-Type:%s\r\n\r\n'%ContentType).encode())
                 sx.send(f.read().encode())
@@ -139,9 +139,9 @@ def ConnectionEstablished(sx,addr): # Analyse Request
                 sx.send('HTTP/1.1 404 Error\r\n\r\n'.encode())
                 sx.close()
         except:
+            print('rb')
             with open(Address[1:],'rb') as f:
                 #print('file')
-                sx.send(str('HTTP/1.1 200 OK\nContent-Type:%s\r\n\r\n'%ContentType).encode())
                 sx.send(f.read())
             sx.close()
     except Exception as r:
