@@ -29,7 +29,7 @@ function ontheScroll() {
     var maxsc = 0.15 * $("#main-container").innerHeight();
     var maj = maxsc - $(window).scrollTop();
     if (maj > 0) {
-        console.log("Padding")
+//        console.log("Padding")
         $("#enjoytitle").css("padding-top", String(OrgTitle - maxsc + maj) + "px")//Dynamic
     } else {
         $("#enjoytitle").css("padding-top",String(OrgTitle - maxsc) + "px")//Maximum
